@@ -1,0 +1,42 @@
+﻿@media screen and (min-width: 200px) {
+    .e-selected {
+        color: black !important;
+        font-weight: bold;
+    }
+
+    .e-menu {
+        background-color: whitesmoke !important;
+    }
+
+    .e-menu-parent {
+        background-color: whitesmoke !important;
+    }
+
+    .e-menu-item {
+        font-size: 24px !important;
+        background-color: whitesmoke !important;
+        margin: 20px 0 !important;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .e-selected {
+        color: black !important;
+        font-weight: bold;
+    }
+
+    .e-menu {
+        background-color: whitesmoke !important;
+    }
+
+    .e-menu-parent {
+        background-color: whitesmoke !important;
+    }
+
+    .e-menu-item {
+        font-size: 14px !important;
+        background-color: whitesmoke !important;
+        margin: 10px 0 !important;
+    }
+}
+
