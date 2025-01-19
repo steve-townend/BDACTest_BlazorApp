@@ -21,6 +21,28 @@
             <div class="menu-scrollable">
                 <SfTreeView TValue="MenuItem" ExpandOn="ExpandAction.Click">
                     <TreeViewFieldsSettings TValue="MenuItem" Id="Id" DataSource="@Menu" Text="Name" ParentID="ParentId" HasChildren="HasSubMenu" Expanded="Expanded"></TreeViewFieldsSettings>
+                    <TreeViewTemplates TValue="MenuItem">
+                        <NodeTemplate>
+                            @{
+                                var item = ((context as MenuItem));
+                                <div>
+                                    <div class="treeviewdiv">
+                                        <div class="nodetext">@(item.Name)</div>
+                                        @if (item.HasSubMenu)
+                                        {
+                                            <div class="nodebadge">
+                                                <SfChip>
+                                                    <ChipItems>
+                                                        <ChipItem Text="New" CssClass="e-warning"></ChipItem>
+                                                    </ChipItems>
+                                                </SfChip>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </NodeTemplate>
+                    </TreeViewTemplates>
                 </SfTreeView>
             </div>
 

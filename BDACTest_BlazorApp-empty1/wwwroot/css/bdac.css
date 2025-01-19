@@ -6,7 +6,7 @@ body {
     margin: 0;
     /*background-color: #2DD4BF;*/ /* Teal 400 */
     background-color: whitesmoke; /* Teal 400 */
-    font-size: 12px;
+    font-size: 14px;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     /*font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
 }
@@ -28,7 +28,7 @@ body {
     right: 0;
 */
     height: 100px;
-    background-color: blue;
+    background-color: #1976d2;
     color: white;
     z-index: 3 !important;
     position: relative;
@@ -61,14 +61,47 @@ body {
     z-index: 1;
 }
 
+.nodebadge {
+    float: right;
+    margin-right: 5px
+}
+
+.nodetext {
+    float: left;
+}
+
+.e-chip .e-chip-text {
+    font-size: 8px;
+    font-weight: normal;
+    padding-top: 4px;
+}
+
+.e-chip {
+    height: 14px !important;
+}
+
 .text-content {
-    font-size: 1.5rem;
+    font-size: 14px;
     padding: 1rem;
     z-index: 0;
 }
 
-.e-sidebar-context {
-    /*position: absolute !important;*/
+.e-treeview .e-list-text {
+    font-family: Roboto, "Helvetica Neue", sans-serif !important;
+    padding-left: 4px !important;
+}
+
+.e-active > .e-text-content .e-list-text {
+    color: black !important;
+}
+
+.e-treeview .e-text-content {
+    padding-left: 12px !important;
+}
+
+.e-active > .e-fullrow {
+    background-color: #dddddd !important;
+    border-width: 0 !important;
 }
 
 @media screen and (min-width: 1px) {
@@ -90,6 +123,7 @@ body {
         background-color: whitesmoke !important;
         margin: 10px 0 !important;
     }
+
 }
 
 @media screen and (min-width: 600px) {
@@ -111,5 +145,6 @@ body {
         background-color: whitesmoke !important;
         margin: 10px 0 !important;
     }
+
 }
 
