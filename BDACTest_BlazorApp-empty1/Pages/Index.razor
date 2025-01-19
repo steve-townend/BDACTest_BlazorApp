@@ -15,7 +15,8 @@
         </div>
     </div>
 
-    <SfSidebar Width="200px" Animate="false" Type=SidebarType.Auto @bind-IsOpen="SidebarToggle" Target="@Target" MediaQuery="(min-width: 600px)">
+    <!-- MediaQuery="(min-width: 600px)" -->
+    <SfSidebar Width="200px" Animate="false" Type=SidebarType.Auto OnOpen="OnMenuOpen" OnClose="OnMenuClose" @bind-IsOpen="menuIsOpen" Target="@Target" >
         <ChildContent >
             <div class="menu-scrollable">
                 <SfTreeView TValue="MenuItem" ExpandOn="ExpandAction.Click">
@@ -23,59 +24,8 @@
                 </SfTreeView>
             </div>
 
-            @*         <SfMenu TValue="MenuItem" Orientation="Syncfusion.Blazor.Navigations.Orientation.Vertical" ShowItemOnClick="true">
-            <MenuItems>
-                <MenuItem Text="Welcome"></MenuItem>
-                <MenuItem Text="News"></MenuItem>
-                <MenuItem Text="Club Waters"></MenuItem>
-                <MenuItem Text="Matches"></MenuItem>
-                <MenuItem Text="Standings">
-                    <MenuItems>
-                        <MenuItem Text="Leagues"></MenuItem>
-                        <MenuItem Text="Weights"></MenuItem>
-                        <MenuItem Text="Trophies"></MenuItem>
-                    </MenuItems>
-                </MenuItem>
-                <MenuItem Text="Diary of Events"></MenuItem>
-                <MenuItem Text="Buy Online">
-                    <MenuItems>
-                        <MenuItem Text="Memberships"></MenuItem>
-                        <MenuItem Text="Day Tickets"></MenuItem>
-                        <MenuItem Text="Guest Tickets"></MenuItem>
-                    </MenuItems>
-                </MenuItem>
-                <MenuItem Text="Club Info">
-                    <MenuItems>
-                        <MenuItem Text="Club Officers"></MenuItem>
-                        <MenuItem Text="Rules">
-                            <MenuItems>
-                                <MenuItem Text="General"></MenuItem>
-                                <MenuItem Text="Match"></MenuItem>
-                                <MenuItem Text="Junior General"></MenuItem>
-                                <MenuItem Text="Junior Match"></MenuItem>
-                            </MenuItems>
-                        </MenuItem>
-                        <MenuItem Text="Club Forms"></MenuItem>
-                        <MenuItem Text="Privacy Notice"></MenuItem>
-                        <MenuItem Text="Environmental"></MenuItem>
-                        <MenuItem Text="Angling Trust"></MenuItem>
-                    </MenuItems>
-                </MenuItem>
-                <MenuItem Text="Admin">
-                    <MenuItems>
-                        <MenuItem Text="Members"></MenuItem>
-                        <MenuItem Text="User Admins"></MenuItem>
-                        <MenuItem Text="Payments"></MenuItem>
-                    </MenuItems>
-                </MenuItem>
-                <MenuItem Text="My Details"></MenuItem>
-                <MenuItem Text="Logout"></MenuItem>
-            </MenuItems>
-        </SfMenu>
- *@    </ChildContent>
+        </ChildContent>
     </SfSidebar>
-
-
 
     <div class="maincontent text-content" >
         <div style="text-align: left;">
@@ -84,7 +34,7 @@
             Trying media Query
             <br/>
             <br />
-            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+             Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
             <br />
             Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
             <br />
@@ -117,14 +67,17 @@
             Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
             <br />
             Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            <br />
+            THIS IS THE LAST LINE
         </div>
-        <!-- The first DIV for creating an Overlay -->
+        <!-- DIV for creating an Overlay -->
         <div class="@(menuShowingOnMobile ? "dim" : "hidden")">
         </div>
     </div>
 </div>
 
-<SfMediaQuery @bind-ActiveBreakpoint="activeBreakpoint"></SfMediaQuery>
+<SfMediaQuery @bind-ActiveBreakpoint="activeBreakpoint" OnBreakpointChanged="OnBreakpointChanged"></SfMediaQuery>
 
 @code {
     public string Target = ".maincontent";
@@ -135,22 +88,89 @@
     public bool SidebarToggle = false;
     public void Toggle()
     {
-        SidebarToggle = !SidebarToggle;
+        Console.WriteLine($"Toggle:oldMenuIsOpen - {oldMenuIsOpen}");
+        Console.WriteLine($"Toggle:mobilePortrait - {mobilePortrait}");
 
-        Console.WriteLine(activeBreakpoint);
+        menuIsOpen = !oldMenuIsOpen;
+        menuShowingOnMobile = mobilePortrait && menuIsOpen;
 
-        if (activeBreakpoint == "Small")
-        {
-            menuShowingOnMobile = SidebarToggle;
-        }
+        // if (oldMenuIsOpen)
+        // {
+        //     if (mobilePortrait)
+        //     {
+        //         menuShowingOnMobile = false;
+        //     }
+
+        // }
+        // else
+        // {
+        //     menuIsOpen = !oldMenuIsOpen;
+
+        //     if (mobilePortrait)
+        //     {
+        //         menuShowingOnMobile = true;
+        //     }
+        // }
+
+        // menuIsOpen = mobilePortrait && !oldMenuIsOpen;
+        // if (menuIsOpen)
+        // {
+        //     menuShowingOnMobile = mobilePortrait;
+        //     oldMenuIsOpen = true;
+        // }
+        // else
+        // {
+        //     oldMenuIsOpen = false;
+        // }
+
+
+        // SidebarToggle = !SidebarToggle;
+
+        // // Console.WriteLine(activeBreakpoint);
+
+        // if (mobilePortrait)
+        // {
+        //     menuShowingOnMobile = SidebarToggle;
+        // }
     }
 
     public bool menuShowingOnMobile = false;
+    public bool mobilePortrait = false;
+    public bool menuIsOpen = false;
+    public bool oldMenuIsOpen = false;
+
+    public void OnMenuOpen(Syncfusion.Blazor.Navigations.EventArgs args)
+    {
+        oldMenuIsOpen = true;
+        Console.WriteLine("Menu opening");
+    }
+
+    public void OnMenuClose(Syncfusion.Blazor.Navigations.EventArgs args)
+    {
+        oldMenuIsOpen = false;
+        Console.WriteLine("Menu closing");
+    }
+
+    public void OnBreakpointChanged(BreakpointChangedEventArgs args)
+    {
+        Console.WriteLine($"OnBreakpointChanged:Breakpoint changed - now {activeBreakpoint}");
+        mobilePortrait = activeBreakpoint == "Small" || activeBreakpoint == "Medium";
+
+        menuIsOpen = !mobilePortrait;
+
+        Console.WriteLine($"OnBreakpointChanged:mobilePortrait - now {mobilePortrait}");
+        Console.WriteLine($"OnBreakpointChanged:menuIsOpen - now {menuIsOpen}");
+
+        menuShowingOnMobile = mobilePortrait && menuIsOpen;
+
+        Console.WriteLine($"OnBreakpointChanged:menuShowingOnMobile - now {menuShowingOnMobile}");
+
+    }
 
     public class MenuItem
     {
         public string Id { get; set; } = "";
-        public string ParentId { get; set; } = null;
+        public string? ParentId { get; set; } = null;
         public string Name { get; set; } = "";
         public bool Expanded { get; set; } = false;
         public bool HasSubMenu { get; set; } = false;
@@ -166,29 +186,29 @@
         Menu.Add(new MenuItem { Id = "3", Name = "Club Waters"});
         Menu.Add(new MenuItem { Id = "4", Name = "Matches"});
         Menu.Add(new MenuItem { Id = "5", Name = "Standings", HasSubMenu = true});
-                Menu.Add(new MenuItem { Id = "51", ParentId="5", Name = "Leagues"});
-                Menu.Add(new MenuItem { Id = "52", ParentId="5", Name = "Weights"});
-                Menu.Add(new MenuItem { Id = "53", ParentId="5", Name = "Trophies"});
+                Menu.Add(new MenuItem { Id = "5.1", ParentId="5", Name = "Leagues"});
+                Menu.Add(new MenuItem { Id = "5.2", ParentId="5", Name = "Weights"});
+                Menu.Add(new MenuItem { Id = "5.3", ParentId="5", Name = "Trophies"});
         Menu.Add(new MenuItem { Id = "6", Name = "Diary of Events"});
         Menu.Add(new MenuItem { Id = "7", Name = "Buy Online", HasSubMenu = true});
-                Menu.Add(new MenuItem { Id = "71", ParentId="7", Name = "Memberships"});
-                Menu.Add(new MenuItem { Id = "72", ParentId="7", Name = "Day Tickets"});
-                Menu.Add(new MenuItem { Id = "73", ParentId="7", Name = "Guest Tickets"});
+                Menu.Add(new MenuItem { Id = "7.1", ParentId="7", Name = "Memberships"});
+                Menu.Add(new MenuItem { Id = "7.2", ParentId="7", Name = "Day Tickets"});
+                Menu.Add(new MenuItem { Id = "7.3", ParentId="7", Name = "Guest Tickets"});
         Menu.Add(new MenuItem { Id = "8", Name = "Club Info", HasSubMenu = true});
-                Menu.Add(new MenuItem { Id = "81", ParentId="8", Name = "Club Officers"});
-                Menu.Add(new MenuItem { Id = "82", ParentId="8", Name = "Rules", HasSubMenu = true});
-                        Menu.Add(new MenuItem { Id = "821", ParentId="82", Name = "General"});
-                        Menu.Add(new MenuItem { Id = "822", ParentId="82", Name = "Match"});
-                        Menu.Add(new MenuItem { Id = "823", ParentId="82", Name = "Junior General"});
-                        Menu.Add(new MenuItem { Id = "824", ParentId="82", Name = "Junior Match"});
-                Menu.Add(new MenuItem { Id = "83", ParentId="8", Name = "Club Forms" });
-                Menu.Add(new MenuItem { Id = "84", ParentId="8", Name = "Privacy Notice"});
-                Menu.Add(new MenuItem { Id = "85", ParentId="8", Name = "Environmental" });
-                Menu.Add(new MenuItem { Id = "86", ParentId="8", Name = "Angling Trust" });
+                Menu.Add(new MenuItem { Id = "8.1", ParentId="8", Name = "Club Officers"});
+                Menu.Add(new MenuItem { Id = "8.2", ParentId="8", Name = "Rules", HasSubMenu = true});
+                        Menu.Add(new MenuItem { Id = "8.2.1", ParentId="8.2", Name = "General"});
+                        Menu.Add(new MenuItem { Id = "8.2.2", ParentId="8.2", Name = "Match"});
+                        Menu.Add(new MenuItem { Id = "8.2.3", ParentId="8.2", Name = "Junior General"});
+                        Menu.Add(new MenuItem { Id = "8.2.4", ParentId="8.2", Name = "Junior Match"});
+                Menu.Add(new MenuItem { Id = "8.3", ParentId="8", Name = "Club Forms" });
+                Menu.Add(new MenuItem { Id = "8.4", ParentId="8", Name = "Privacy Notice"});
+                Menu.Add(new MenuItem { Id = "8.5", ParentId="8", Name = "Environmental" });
+                Menu.Add(new MenuItem { Id = "8.6", ParentId="8", Name = "Angling Trust" });
         Menu.Add(new MenuItem { Id = "9", Name = "Admin", HasSubMenu = true});
-                Menu.Add(new MenuItem { Id = "91", ParentId="9", Name = "Members"});
-                Menu.Add(new MenuItem { Id = "92", ParentId="9", Name = "User Admins"});
-                Menu.Add(new MenuItem { Id = "93", ParentId="9", Name = "Payments"});
+                Menu.Add(new MenuItem { Id = "9.1", ParentId="9", Name = "Members"});
+                Menu.Add(new MenuItem { Id = "9.2", ParentId="9", Name = "User Admins"});
+                Menu.Add(new MenuItem { Id = "9.3", ParentId="9", Name = "Payments"});
         Menu.Add(new MenuItem { Id = "10", Name = "My Details"});
         Menu.Add(new MenuItem { Id = "11", Name = "Logout"});
 
@@ -205,7 +225,7 @@
         top: 0;
         z-index: 2 !important;
         background-color: black;
-        opacity: 0.5;
+        opacity: 0.25;
     }
 
     .hidden {

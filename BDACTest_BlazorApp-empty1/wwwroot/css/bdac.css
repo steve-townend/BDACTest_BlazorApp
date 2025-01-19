@@ -44,7 +44,7 @@ body {
 
 .menu-scrollable {
     overflow-y: scroll !important;
-    height: calc(100vh - 100px) !important;
+    height: calc(100vh - 120px) !important;
 }
 
 .body-container-scrollable {
@@ -56,12 +56,7 @@ body {
 }
 
 .maincontent {
-    /*    position: absolute;
-    top: 60px;
-    left: 0;
-    right: 0;
-    bottom: 6px;
-*/
+    min-height: calc(100vh - 140px) !important;
     /*background-color: yellow;*/
     z-index: 1;
 }
@@ -76,7 +71,7 @@ body {
     /*position: absolute !important;*/
 }
 
-@media screen and (min-width: 200px) {
+@media screen and (min-width: 1px) {
     .e-selected {
         color: black !important;
         font-weight: bold;
