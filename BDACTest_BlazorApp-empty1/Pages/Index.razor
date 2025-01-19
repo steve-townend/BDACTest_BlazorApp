@@ -2,10 +2,29 @@
 
 @using Syncfusion.Blazor.Navigations
 
-<SfSidebar @ref="sidebarObj" Width="280px" Type=SidebarType.Push @bind-IsOpen="SidebarToggle" Target="@Target" MediaQuery="(min-width: 600px)">
-    <ChildContent>
-        <SfMenu TValue="MenuItem" Orientation="Syncfusion.Blazor.Navigations.Orientation.Vertical" ShowItemOnClick="true" >
-            <MenuItems >
+<div class="body-container @(menuShowingOnMobile ? "body-container-not-scrollable" : "body-container-scrollable")">
+
+    <div class="banner">
+        <div onclick="@Toggle" class="banner-hamburger">
+            X
+        </div>
+        <div class="banner-text">
+            Boroughbridge & District
+            <br />
+            Angling Club
+        </div>
+    </div>
+
+    <SfSidebar Width="200px" Animate="false" Type=SidebarType.Auto @bind-IsOpen="SidebarToggle" Target="@Target" MediaQuery="(min-width: 600px)">
+        <ChildContent >
+            <div class="menu-scrollable">
+                <SfTreeView TValue="MenuItem" ExpandOn="ExpandAction.Click">
+                    <TreeViewFieldsSettings TValue="MenuItem" Id="Id" DataSource="@Menu" Text="Name" ParentID="ParentId" HasChildren="HasSubMenu" Expanded="Expanded"></TreeViewFieldsSettings>
+                </SfTreeView>
+            </div>
+
+            @*         <SfMenu TValue="MenuItem" Orientation="Syncfusion.Blazor.Navigations.Orientation.Vertical" ShowItemOnClick="true">
+            <MenuItems>
                 <MenuItem Text="Welcome"></MenuItem>
                 <MenuItem Text="News"></MenuItem>
                 <MenuItem Text="Club Waters"></MenuItem>
@@ -53,63 +72,159 @@
                 <MenuItem Text="Logout"></MenuItem>
             </MenuItems>
         </SfMenu>
-    </ChildContent>
-</SfSidebar>
+ *@    </ChildContent>
+    </SfSidebar>
 
-<div id="head">
-    <SfToolbar>
-        <ToolbarItems>
-            <ToolbarItem PrefixIcon="e-tbar-menu-icon tb-icons" TooltipText="Menu" OnClick="Toggle" Visible="!SidebarToggle"></ToolbarItem>
-            <ToolbarItem Align="@ItemAlign.Center">
-                <Template>
-                    <div class="e-folder">
-                        <div class="e-folder-name">Header</div>
-                    </div>
-                </Template>
-            </ToolbarItem>
-            <ToolbarItem PrefixIcon="e-tbar-search-icon tb-icons" TooltipText="Search" Align="@ItemAlign.Right">
-            </ToolbarItem>
-            <ToolbarItem PrefixIcon="e-tbar-settings-icon tb-icons" TooltipText="Popup" Align="@ItemAlign.Right">
-            </ToolbarItem>
-        </ToolbarItems>
-    </SfToolbar>
-</div>
 
-<div class="maincontent text-content" >
-    <div style="text-align: left;">
-        Main Content
 
-        Trying mediaQuery
+    <div class="maincontent text-content" >
+        <div style="text-align: left;">
+            Main Content
+            <br/>
+            Trying media Query
+            <br/>
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+            <br />
+            Lots more content just to see how it looks when it has to scroll off the bottom. Does the header stay in place and how does the menu look?
+        </div>
+        <!-- The first DIV for creating an Overlay -->
+        <div class="@(menuShowingOnMobile ? "dim" : "hidden")">
+        </div>
     </div>
 </div>
 
+<SfMediaQuery @bind-ActiveBreakpoint="activeBreakpoint"></SfMediaQuery>
+
 @code {
-    SfSidebar sidebarObj;
     public string Target = ".maincontent";
+
+    private string deviceSize { get; set; } = "";
+    private string activeBreakpoint { get; set; } = "";
+
     public bool SidebarToggle = false;
     public void Toggle()
     {
         SidebarToggle = !SidebarToggle;
+
+        Console.WriteLine(activeBreakpoint);
+
+        if (activeBreakpoint == "Small")
+        {
+            menuShowingOnMobile = SidebarToggle;
+        }
+    }
+
+    public bool menuShowingOnMobile = false;
+
+    public class MenuItem
+    {
+        public string Id { get; set; } = "";
+        public string ParentId { get; set; } = null;
+        public string Name { get; set; } = "";
+        public bool Expanded { get; set; } = false;
+        public bool HasSubMenu { get; set; } = false;
+    }
+
+    List<MenuItem> Menu = new List<MenuItem>();
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Menu.Add(new MenuItem { Id = "1", Name = "Welcome"});
+        Menu.Add(new MenuItem { Id = "2", Name = "News"});
+        Menu.Add(new MenuItem { Id = "3", Name = "Club Waters"});
+        Menu.Add(new MenuItem { Id = "4", Name = "Matches"});
+        Menu.Add(new MenuItem { Id = "5", Name = "Standings", HasSubMenu = true});
+                Menu.Add(new MenuItem { Id = "51", ParentId="5", Name = "Leagues"});
+                Menu.Add(new MenuItem { Id = "52", ParentId="5", Name = "Weights"});
+                Menu.Add(new MenuItem { Id = "53", ParentId="5", Name = "Trophies"});
+        Menu.Add(new MenuItem { Id = "6", Name = "Diary of Events"});
+        Menu.Add(new MenuItem { Id = "7", Name = "Buy Online", HasSubMenu = true});
+                Menu.Add(new MenuItem { Id = "71", ParentId="7", Name = "Memberships"});
+                Menu.Add(new MenuItem { Id = "72", ParentId="7", Name = "Day Tickets"});
+                Menu.Add(new MenuItem { Id = "73", ParentId="7", Name = "Guest Tickets"});
+        Menu.Add(new MenuItem { Id = "8", Name = "Club Info", HasSubMenu = true});
+                Menu.Add(new MenuItem { Id = "81", ParentId="8", Name = "Club Officers"});
+                Menu.Add(new MenuItem { Id = "82", ParentId="8", Name = "Rules", HasSubMenu = true});
+                        Menu.Add(new MenuItem { Id = "821", ParentId="82", Name = "General"});
+                        Menu.Add(new MenuItem { Id = "822", ParentId="82", Name = "Match"});
+                        Menu.Add(new MenuItem { Id = "823", ParentId="82", Name = "Junior General"});
+                        Menu.Add(new MenuItem { Id = "824", ParentId="82", Name = "Junior Match"});
+                Menu.Add(new MenuItem { Id = "83", ParentId="8", Name = "Club Forms" });
+                Menu.Add(new MenuItem { Id = "84", ParentId="8", Name = "Privacy Notice"});
+                Menu.Add(new MenuItem { Id = "85", ParentId="8", Name = "Environmental" });
+                Menu.Add(new MenuItem { Id = "86", ParentId="8", Name = "Angling Trust" });
+        Menu.Add(new MenuItem { Id = "9", Name = "Admin", HasSubMenu = true});
+                Menu.Add(new MenuItem { Id = "91", ParentId="9", Name = "Members"});
+                Menu.Add(new MenuItem { Id = "92", ParentId="9", Name = "User Admins"});
+                Menu.Add(new MenuItem { Id = "93", ParentId="9", Name = "Payments"});
+        Menu.Add(new MenuItem { Id = "10", Name = "My Details"});
+        Menu.Add(new MenuItem { Id = "11", Name = "Logout"});
+
     }
 }
 
 <style>
 
-    .maincontent {
-        height: 400px;
-        background-color: rgb(244, 246, 249);
+    .dim {
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 2 !important;
+        background-color: black;
+        opacity: 0.5;
     }
 
+    .hidden {
+        display: none;  
+    }
 
     /* Sidebar styles  */
     .e-sidebar {
         background-color: whitesmoke;
+
+        /*         position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 6px;
+
+ */    
     }
 
-    .text-content {
-        font-size: 1.5rem;
-        padding: 3rem;
-    }
 
     @@font-face {
         font-family: 'Material_toolbar';
